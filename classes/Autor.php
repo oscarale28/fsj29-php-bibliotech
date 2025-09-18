@@ -15,7 +15,7 @@ class Autor extends EntidadBase
     private ?DateTime $fechaNacimiento;
     private ?DateTime $fechaFallecimiento;
     private string $biografia;
-    
+
     /**
      * Constructor de la clase Autor
      * @param string $nombre Nombre del autor
@@ -41,13 +41,13 @@ class Autor extends EntidadBase
         $this->fechaFallecimiento = null;
         $this->biografia = $biografia;
     }
-    
+
     // Getters y Setters (Encapsulación)
     public function getNombre(): string
     {
         return $this->nombre;
     }
-    
+
     public function setNombre(string $nombre): void
     {
         if (!empty(trim($nombre))) {
@@ -55,12 +55,12 @@ class Autor extends EntidadBase
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     public function getApellido(): string
     {
         return $this->apellido;
     }
-    
+
     public function setApellido(string $apellido): void
     {
         if (!empty(trim($apellido))) {
@@ -68,51 +68,51 @@ class Autor extends EntidadBase
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     public function getNacionalidad(): string
     {
         return $this->nacionalidad;
     }
-    
+
     public function setNacionalidad(string $nacionalidad): void
     {
         $this->nacionalidad = trim($nacionalidad);
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getFechaNacimiento(): ?DateTime
     {
         return $this->fechaNacimiento;
     }
-    
+
     public function setFechaNacimiento(?DateTime $fechaNacimiento): void
     {
         $this->fechaNacimiento = $fechaNacimiento;
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getFechaFallecimiento(): ?DateTime
     {
         return $this->fechaFallecimiento;
     }
-    
+
     public function setFechaFallecimiento(?DateTime $fechaFallecimiento): void
     {
         $this->fechaFallecimiento = $fechaFallecimiento;
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getBiografia(): string
     {
         return $this->biografia;
     }
-    
+
     public function setBiografia(string $biografia): void
     {
         $this->biografia = trim($biografia);
         $this->actualizarFechaModificacion();
     }
-    
+
     /**
      * Obtiene el nombre completo del autor
      * @return string Nombre completo
@@ -121,7 +121,7 @@ class Autor extends EntidadBase
     {
         return $this->nombre . ' ' . $this->apellido;
     }
-    
+
     /**
      * Verifica si el autor está vivo
      * @return bool True si está vivo, false si ha fallecido
@@ -130,7 +130,7 @@ class Autor extends EntidadBase
     {
         return $this->fechaFallecimiento === null;
     }
-    
+
     /**
      * Calcula la edad del autor
      * @return int|null Edad en años o null si no se puede calcular
@@ -140,11 +140,11 @@ class Autor extends EntidadBase
         if ($this->fechaNacimiento === null) {
             return null;
         }
-        
+
         $fechaReferencia = $this->fechaFallecimiento ?? new DateTime();
         return $this->fechaNacimiento->diff($fechaReferencia)->y;
     }
-    
+
     /**
      * Valida los datos del autor
      * @return bool True si los datos son válidos
@@ -153,7 +153,7 @@ class Autor extends EntidadBase
     {
         return !empty($this->nombre) && !empty($this->apellido);
     }
-    
+
     /**
      * Convierte el autor a array
      * @return array Representación en array
@@ -175,7 +175,7 @@ class Autor extends EntidadBase
             'fecha_actualizacion' => $this->fechaActualizacion->format('Y-m-d H:i:s')
         ];
     }
-    
+
     /**
      * Representación en string del autor
      * @return string Cadena representativa

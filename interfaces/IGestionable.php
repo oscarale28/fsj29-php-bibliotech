@@ -12,7 +12,7 @@ interface IGestionable
      * @return bool Éxito de la operación
      */
     public function crear(array $datos): bool;
-    
+
     /**
      * Actualiza una entidad existente
      * @param int $id ID de la entidad
@@ -20,14 +20,14 @@ interface IGestionable
      * @return bool Éxito de la operación
      */
     public function actualizar(int $id, array $datos): bool;
-    
+
     /**
      * Elimina una entidad
      * @param int $id ID de la entidad
      * @return bool Éxito de la operación
      */
     public function eliminar(int $id): bool;
-    
+
     /**
      * Busca entidades por criterios
      * @param array $criterios Criterios de búsqueda
