@@ -1,8 +1,9 @@
 <?php
 
-require_once 'EntidadBase.php';
-require_once 'Usuario.php';
-require_once 'Libro.php';
+namespace BiblioTech\classes;
+
+use DateInterval;
+use DateTime;
 
 /**
  * Clase Prestamo

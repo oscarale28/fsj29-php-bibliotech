@@ -1,5 +1,7 @@
 <?php
 
+namespace BiblioTech\interfaces;
+
 /**
  * Interface IPrestable
  * Define las operaciones relacionadas con préstamos

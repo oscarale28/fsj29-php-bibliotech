@@ -1,6 +1,8 @@
 <?php
 
-require_once '../interfaces/IGestionable.php';
+namespace BiblioTech\managers;
+
+use BiblioTech\interfaces\IGestionable;
 
 /**
  * Clase abstracta BaseManager

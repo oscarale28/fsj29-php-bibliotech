@@ -1,9 +1,10 @@
 <?php
 
-require_once 'EntidadBase.php';
-require_once '../interfaces/IPrestable.php';
-require_once 'Autor.php';
-require_once 'Categoria.php';
+namespace BiblioTech\classes;
+
+use BiblioTech\interfaces\IPrestable;
+use DateInterval;
+use DateTime;
 
 /**
  * Clase Libro

@@ -1,5 +1,9 @@
 <?php
 
+namespace BiblioTech\classes;
+
+use DateTime;
+
 /**
  * Clase abstracta EntidadBase
  * Proporciona funcionalidades comunes para todas las entidades del sistema

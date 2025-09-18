@@ -1,7 +1,10 @@
 <?php
 
-require_once 'BaseManager.php';
-require_once '../classes/Autor.php';
+namespace BiblioTech\managers;
+
+use BiblioTech\classes\Autor;
+use DateTime;
+use Exception;
 
 /**
  * Clase AutorManager

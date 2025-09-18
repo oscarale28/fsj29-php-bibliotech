@@ -1,0 +1,16 @@
+{
+    "name": "oscarale28/bibliotech",
+    "description": "BiblioTech - Sistema de Gestión de Biblioteca",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "BiblioTech\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "oscarale28"
+        }
+    ],
+    "require": {}
+}

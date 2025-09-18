@@ -1,7 +1,9 @@
 <?php
 
-require_once 'BaseManager.php';
-require_once '../classes/Usuario.php';
+namespace BiblioTech\managers;
+
+use BiblioTech\classes\Usuario;
+use Exception;
 
 /**
  * Clase UsuarioManager

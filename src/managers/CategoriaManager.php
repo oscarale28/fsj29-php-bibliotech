@@ -1,7 +1,9 @@
 <?php
 
-require_once 'BaseManager.php';
-require_once '../classes/Categoria.php';
+namespace BiblioTech\managers;
+
+use BiblioTech\classes\Categoria;
+use Exception;
 
 /**
  * Clase CategoriaManager

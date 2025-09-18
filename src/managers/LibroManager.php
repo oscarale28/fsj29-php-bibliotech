@@ -1,9 +1,9 @@
 <?php
 
-require_once 'BaseManager.php';
-require_once '../classes/Libro.php';
-require_once '../classes/Autor.php';
-require_once '../classes/Categoria.php';
+namespace BiblioTech\managers;
+
+use BiblioTech\classes\Libro;
+use Exception;
 
 /**
  * Clase LibroManager

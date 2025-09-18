@@ -1,6 +1,8 @@
 <?php
 
-require_once 'EntidadBase.php';
+namespace BiblioTech\classes;
+
+use DateTime;
 
 /**
  * Clase Autor

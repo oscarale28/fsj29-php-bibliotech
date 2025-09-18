@@ -1,5 +1,7 @@
 <?php
 
+namespace BiblioTech\interfaces;
+
 /**
  * Interface IGestionable
  * Define las operaciones básicas de gestión para entidades del sistema
