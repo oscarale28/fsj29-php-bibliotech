@@ -31,6 +31,87 @@ class Biblioteca
         $this->managerUsuario = new UsuarioManager();
         $this->managerLibro = new LibroManager();
         $this->managerPrestamo = new PrestamoManager();
+
+        // Inicializar datos de ejemplo
+        $this->inicializarDatosEjemplo();
+    }
+
+    /**
+     * Inicializa datos de ejemplo para demostración del sistema
+     */
+    private function inicializarDatosEjemplo(): void
+    {
+        // Agregar autores de ejemplo
+        $this->agregarAutor("Gabriel", "García Márquez", [
+            'nacionalidad' => 'Colombiano',
+            'fecha_nacimiento' => '1927-03-06',
+            'biografia' => 'Escritor colombiano, Premio Nobel de Literatura 1982'
+        ]);
+
+        $this->agregarAutor("Isabel", "Allende", [
+            'nacionalidad' => 'Chilena',
+            'fecha_nacimiento' => '1942-08-02'
+        ]);
+
+        $this->agregarAutor("Mario", "Vargas Llosa", [
+            'nacionalidad' => 'Peruano',
+            'fecha_nacimiento' => '1936-03-28'
+        ]);
+
+        // Agregar categorías de ejemplo
+        $this->agregarCategoria("Realismo Mágico", "Literatura que combina elementos fantásticos con realidad");
+        $this->agregarCategoria("Novela Histórica", "Narrativa ambientada en el pasado");
+        $this->agregarCategoria("Literatura Contemporánea", "Obras literarias actuales");
+
+        // Registrar usuarios de ejemplo
+        $this->registrarUsuario("Ana", "García", "ana.garcia@email.com", "12345678", "estudiante");
+        $this->registrarUsuario("Carlos", "López", "carlos.lopez@email.com", "87654321", "profesor");
+        $this->registrarUsuario("María", "Rodríguez", "maria.rodriguez@email.com", "11223344", "externo");
+
+        // Agregar libros de ejemplo
+        $autores = $this->obtenerTodosLosAutores();
+        $categorias = $this->obtenerCategoriasActivas();
+
+        if (!empty($autores) && !empty($categorias)) {
+            $this->agregarLibro(
+                "Cien Años de Soledad",
+                "978-0-06-088328-7",
+                $autores[0]->getId(),
+                $categorias[0]->getId(),
+                [
+                    'editorial' => 'Editorial Sudamericana',
+                    'anio_publicacion' => 1967,
+                    'numero_paginas' => 417,
+                    'ejemplares_total' => 3
+                ]
+            );
+
+            $this->agregarLibro(
+                "La Casa de los Espíritus",
+                "978-84-204-8264-5",
+                $autores[1]->getId(),
+                $categorias[0]->getId(),
+                [
+                    'editorial' => 'Plaza & Janés',
+                    'anio_publicacion' => 1982,
+                    'numero_paginas' => 368,
+                    'ejemplares_total' => 2
+                ]
+            );
+
+            $this->agregarLibro(
+                "La Ciudad y los Perros",
+                "978-84-663-0002-4",
+                $autores[2]->getId(),
+                $categorias[1]->getId(),
+                [
+                    'editorial' => 'Seix Barral',
+                    'anio_publicacion' => 1963,
+                    'numero_paginas' => 352,
+                    'ejemplares_total' => 2
+                ]
+            );
+        }
     }
 
     // === GESTIÓN DE AUTORES ===
@@ -251,12 +332,15 @@ class Biblioteca
      */
     public function obtenerResumenBiblioteca(): array
     {
+        $librosDisponibles = count($this->obtenerLibrosDisponibles());
         $librosTotal = $this->managerLibro->contar();
         $prestamosActivos = count($this->managerPrestamo->obtenerPrestamosActivos());
         $prestamosVencidos = count($this->obtenerPrestamosVencidos());
 
         return [
             'total_libros' => $librosTotal,
+            'libros_disponibles' => $librosDisponibles,
+            'libros_prestados' => $librosTotal - $librosDisponibles,
             'prestamos_activos' => $prestamosActivos,
             'prestamos_vencidos' => $prestamosVencidos,
             'usuarios_registrados' => $this->managerUsuario->contar(),

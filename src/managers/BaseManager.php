@@ -28,7 +28,7 @@ abstract class BaseManager implements IGestionable
      */
     public function obtenerTodas(): array
     {
-        return $this->entidades;
+        return array_values($this->entidades);
     }
 
     /**

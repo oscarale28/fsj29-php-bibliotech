@@ -132,6 +132,19 @@ class LibroManager extends BaseManager
         return $this->buscar(['titulo' => $titulo]);
     }
 
+    public function obtenerLibrosDisponibles(): array
+    {
+        $resultados = [];
+
+        foreach ($this->entidades as $libro) {
+            if ($libro->getEjemplaresDisponibles() > 0 && $libro->isActivo()) {
+                $resultados[] = $libro;
+            }
+        }
+
+        return $resultados;
+    }
+
     /**
      * Busca libros por autor
      */
