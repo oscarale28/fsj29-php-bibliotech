@@ -19,15 +19,15 @@ class Prestamo extends EntidadBase
     private string $estado; // 'activo', 'devuelto', 'vencido'
     private string $observaciones;
     private float $multa;
-    
+
     // Constantes para estados
     public const ESTADO_ACTIVO = 'activo';
     public const ESTADO_DEVUELTO = 'devuelto';
     public const ESTADO_VENCIDO = 'vencido';
-    
+
     // Constante para cálculo de multa
     public const MULTA_DIARIA = 0.50; // Multa por día de retraso
-    
+
     /**
      * Constructor de la clase Prestamo
      */
@@ -48,61 +48,61 @@ class Prestamo extends EntidadBase
         $this->observaciones = $observaciones;
         $this->multa = 0.0;
     }
-    
+
     // Getters
     public function getUsuario(): Usuario
     {
         return $this->usuario;
     }
-    
+
     public function getLibro(): Libro
     {
         return $this->libro;
     }
-    
+
     public function getFechaPrestamo(): DateTime
     {
         return $this->fechaPrestamo;
     }
-    
+
     public function getFechaDevolucionEsperada(): DateTime
     {
         return $this->fechaDevolucionEsperada;
     }
-    
+
     public function getFechaDevolucionReal(): ?DateTime
     {
         return $this->fechaDevolucionReal;
     }
-    
+
     public function getEstado(): string
     {
         return $this->estado;
     }
-    
+
     public function getObservaciones(): string
     {
         return $this->observaciones;
     }
-    
+
     public function getMulta(): float
     {
         return $this->multa;
     }
-    
+
     // Setters
     public function setObservaciones(string $observaciones): void
     {
         $this->observaciones = trim($observaciones);
         $this->actualizarFechaModificacion();
     }
-    
+
     public function setMulta(float $multa): void
     {
         $this->multa = max(0, $multa);
         $this->actualizarFechaModificacion();
     }
-    
+
     /**
      * Procesa la devolución del libro
      */
@@ -111,19 +111,19 @@ class Prestamo extends EntidadBase
         if ($this->estado !== self::ESTADO_ACTIVO) {
             return false;
         }
-        
+
         $this->fechaDevolucionReal = new DateTime();
         $this->estado = self::ESTADO_DEVUELTO;
-        
+
         // Calcular multa si hay retraso
         if ($this->estaVencido()) {
             $this->calcularMulta();
         }
-        
+
         $this->actualizarFechaModificacion();
         return $this->libro->devolver();
     }
-    
+
     /**
      * Verifica si el préstamo está vencido
      */
@@ -132,10 +132,10 @@ class Prestamo extends EntidadBase
         if ($this->estado === self::ESTADO_DEVUELTO) {
             return $this->fechaDevolucionReal > $this->fechaDevolucionEsperada;
         }
-        
+
         return new DateTime() > $this->fechaDevolucionEsperada;
     }
-    
+
     /**
      * Calcula los días de retraso
      */
@@ -144,11 +144,11 @@ class Prestamo extends EntidadBase
         if (!$this->estaVencido()) {
             return 0;
         }
-        
+
         $fechaReferencia = $this->fechaDevolucionReal ?? new DateTime();
         return $fechaReferencia->diff($this->fechaDevolucionEsperada)->days;
     }
-    
+
     /**
      * Calcula la multa por retraso
      */
@@ -157,7 +157,7 @@ class Prestamo extends EntidadBase
         $diasRetraso = $this->diasRetraso();
         $this->multa = $diasRetraso * self::MULTA_DIARIA;
     }
-    
+
     /**
      * Actualiza el estado del préstamo
      */
@@ -169,7 +169,7 @@ class Prestamo extends EntidadBase
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     /**
      * Extiende la fecha de devolución
      */
@@ -178,19 +178,19 @@ class Prestamo extends EntidadBase
         if ($this->estado !== self::ESTADO_ACTIVO) {
             return false;
         }
-        
+
         $this->fechaDevolucionEsperada->add(new DateInterval("P{$diasAdicionales}D"));
-        
+
         // Si ya no está vencido, cambiar estado a activo
         if (!$this->estaVencido()) {
             $this->estado = self::ESTADO_ACTIVO;
             $this->multa = 0.0;
         }
-        
+
         $this->actualizarFechaModificacion();
         return true;
     }
-    
+
     /**
      * Verifica si el préstamo está activo
      */
@@ -198,7 +198,7 @@ class Prestamo extends EntidadBase
     {
         return $this->estado === self::ESTADO_ACTIVO;
     }
-    
+
     /**
      * Verifica si el préstamo fue devuelto
      */
@@ -206,7 +206,7 @@ class Prestamo extends EntidadBase
     {
         return $this->estado === self::ESTADO_DEVUELTO;
     }
-    
+
     /**
      * Obtiene un resumen del préstamo
      */
@@ -215,21 +215,21 @@ class Prestamo extends EntidadBase
         $estado = ucfirst($this->estado);
         $diasRetraso = $this->diasRetraso();
         $multa = $this->multa > 0 ? " - Multa: $" . number_format($this->multa, 2) : '';
-        
+
         return "Préstamo #{$this->id} - {$this->libro->getTitulo()} - {$estado}" .
-               ($diasRetraso > 0 ? " ({$diasRetraso} días de retraso)" : '') . $multa;
+            ($diasRetraso > 0 ? " ({$diasRetraso} días de retraso)" : '') . $multa;
     }
-    
+
     /**
      * Valida los datos del préstamo
      */
     protected function validar(): bool
     {
-        return $this->usuario !== null && 
-               $this->libro !== null && 
-               $this->fechaDevolucionEsperada > $this->fechaPrestamo;
+        return $this->usuario !== null &&
+            $this->libro !== null &&
+            $this->fechaDevolucionEsperada > $this->fechaPrestamo;
     }
-    
+
     /**
      * Convierte el préstamo a array
      */
@@ -252,7 +252,7 @@ class Prestamo extends EntidadBase
             'fecha_actualizacion' => $this->fechaActualizacion->format('Y-m-d H:i:s')
         ];
     }
-    
+
     public function __toString(): string
     {
         return $this->getResumen();

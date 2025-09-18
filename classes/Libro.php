@@ -25,13 +25,13 @@ class Libro extends EntidadBase implements IPrestable
     private int $ejemplaresDisponibles;
     private string $ubicacion;
     private bool $activo;
-    
+
     // Estados de préstamo
     private bool $prestado;
     private ?int $usuarioPrestamo;
     private ?DateTime $fechaPrestamo;
     private ?DateTime $fechaDevolucionEsperada;
-    
+
     /**
      * Constructor de la clase Libro
      */
@@ -63,20 +63,20 @@ class Libro extends EntidadBase implements IPrestable
         $this->ejemplaresDisponibles = $ejemplaresTotal;
         $this->ubicacion = $ubicacion;
         $this->activo = true;
-        
+
         // Estado de préstamo
         $this->prestado = false;
         $this->usuarioPrestamo = null;
         $this->fechaPrestamo = null;
         $this->fechaDevolucionEsperada = null;
     }
-    
+
     // Getters y Setters
     public function getTitulo(): string
     {
         return $this->titulo;
     }
-    
+
     public function setTitulo(string $titulo): void
     {
         if (!empty(trim($titulo))) {
@@ -84,56 +84,56 @@ class Libro extends EntidadBase implements IPrestable
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     public function getIsbn(): string
     {
         return $this->isbn;
     }
-    
+
     public function setIsbn(string $isbn): void
     {
         $this->isbn = trim($isbn);
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getAutor(): Autor
     {
         return $this->autor;
     }
-    
+
     public function setAutor(Autor $autor): void
     {
         $this->autor = $autor;
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getCategoria(): Categoria
     {
         return $this->categoria;
     }
-    
+
     public function setCategoria(Categoria $categoria): void
     {
         $this->categoria = $categoria;
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getEditorial(): string
     {
         return $this->editorial;
     }
-    
+
     public function setEditorial(string $editorial): void
     {
         $this->editorial = trim($editorial);
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getAnioPublicacion(): int
     {
         return $this->anioPublicacion;
     }
-    
+
     public function setAnioPublicacion(int $anioPublicacion): void
     {
         if ($anioPublicacion > 0 && $anioPublicacion <= date('Y')) {
@@ -141,12 +141,12 @@ class Libro extends EntidadBase implements IPrestable
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     public function getNumeroPaginas(): int
     {
         return $this->numeroPaginas;
     }
-    
+
     public function setNumeroPaginas(int $numeroPaginas): void
     {
         if ($numeroPaginas > 0) {
@@ -154,135 +154,135 @@ class Libro extends EntidadBase implements IPrestable
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     public function getIdioma(): string
     {
         return $this->idioma;
     }
-    
+
     public function setIdioma(string $idioma): void
     {
         $this->idioma = trim($idioma);
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getDescripcion(): string
     {
         return $this->descripcion;
     }
-    
+
     public function setDescripcion(string $descripcion): void
     {
         $this->descripcion = trim($descripcion);
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getEjemplaresTotal(): int
     {
         return $this->ejemplaresTotal;
     }
-    
+
     public function setEjemplaresTotal(int $ejemplaresTotal): void
     {
         if ($ejemplaresTotal > 0) {
             $diferencia = $ejemplaresTotal - $this->ejemplaresTotal;
             $this->ejemplaresTotal = $ejemplaresTotal;
             $this->ejemplaresDisponibles += $diferencia;
-            
+
             // No permitir ejemplares disponibles negativos
             if ($this->ejemplaresDisponibles < 0) {
                 $this->ejemplaresDisponibles = 0;
             }
-            
+
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     public function getEjemplaresDisponibles(): int
     {
         return $this->ejemplaresDisponibles;
     }
-    
+
     public function getUbicacion(): string
     {
         return $this->ubicacion;
     }
-    
+
     public function setUbicacion(string $ubicacion): void
     {
         $this->ubicacion = trim($ubicacion);
         $this->actualizarFechaModificacion();
     }
-    
+
     public function isActivo(): bool
     {
         return $this->activo;
     }
-    
+
     public function setActivo(bool $activo): void
     {
         $this->activo = $activo;
         $this->actualizarFechaModificacion();
     }
-    
+
     public function isPrestado(): bool
     {
         return $this->prestado;
     }
-    
+
     public function getUsuarioPrestamo(): ?int
     {
         return $this->usuarioPrestamo;
     }
-    
+
     public function getFechaPrestamo(): ?DateTime
     {
         return $this->fechaPrestamo;
     }
-    
+
     public function getFechaDevolucionEsperada(): ?DateTime
     {
         return $this->fechaDevolucionEsperada;
     }
-    
+
     // Implementación de IPrestable
     public function prestar(int $usuarioId): bool
     {
         if (!$this->estaDisponible()) {
             return false;
         }
-        
+
         $this->prestado = true;
         $this->usuarioPrestamo = $usuarioId;
         $this->fechaPrestamo = new DateTime();
         $this->fechaDevolucionEsperada = (new DateTime())->add(new DateInterval('P15D')); // 15 días
         $this->ejemplaresDisponibles--;
         $this->actualizarFechaModificacion();
-        
+
         return true;
     }
-    
+
     public function devolver(): bool
     {
         if (!$this->prestado) {
             return false;
         }
-        
+
         $this->prestado = false;
         $this->usuarioPrestamo = null;
         $this->fechaPrestamo = null;
         $this->fechaDevolucionEsperada = null;
         $this->ejemplaresDisponibles++;
         $this->actualizarFechaModificacion();
-        
+
         return true;
     }
-    
+
     public function estaDisponible(): bool
     {
         return $this->activo && $this->ejemplaresDisponibles > 0;
     }
-    
+
     /**
      * Verifica si el préstamo está vencido
      */
@@ -291,10 +291,10 @@ class Libro extends EntidadBase implements IPrestable
         if (!$this->prestado || !$this->fechaDevolucionEsperada) {
             return false;
         }
-        
+
         return new DateTime() > $this->fechaDevolucionEsperada;
     }
-    
+
     /**
      * Calcula los días de retraso en la devolución
      */
@@ -303,11 +303,11 @@ class Libro extends EntidadBase implements IPrestable
         if (!$this->estaVencido()) {
             return 0;
         }
-        
+
         $hoy = new DateTime();
         return $hoy->diff($this->fechaDevolucionEsperada)->days;
     }
-    
+
     /**
      * Obtiene información completa del libro
      */
@@ -315,19 +315,19 @@ class Libro extends EntidadBase implements IPrestable
     {
         return "{$this->titulo} por {$this->autor->getNombreCompleto()} ({$this->anioPublicacion})";
     }
-    
+
     /**
      * Valida los datos del libro
      */
     protected function validar(): bool
     {
-        return !empty($this->titulo) && 
-               !empty($this->isbn) && 
-               $this->ejemplaresTotal > 0 &&
-               $this->ejemplaresDisponibles >= 0 &&
-               $this->ejemplaresDisponibles <= $this->ejemplaresTotal;
+        return !empty($this->titulo) &&
+            !empty($this->isbn) &&
+            $this->ejemplaresTotal > 0 &&
+            $this->ejemplaresDisponibles >= 0 &&
+            $this->ejemplaresDisponibles <= $this->ejemplaresTotal;
     }
-    
+
     /**
      * Convierte el libro a array
      */
@@ -360,7 +360,7 @@ class Libro extends EntidadBase implements IPrestable
             'fecha_actualizacion' => $this->fechaActualizacion->format('Y-m-d H:i:s')
         ];
     }
-    
+
     public function __toString(): string
     {
         return $this->getInformacionCompleta();

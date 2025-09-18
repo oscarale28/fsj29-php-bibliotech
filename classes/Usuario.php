@@ -19,12 +19,12 @@ class Usuario extends EntidadBase
     private bool $activo;
     private int $maxLibrosPrestamo;
     private int $diasMaximoPrestamo;
-    
+
     // Constantes para tipos de usuario
     public const TIPO_ESTUDIANTE = 'estudiante';
     public const TIPO_PROFESOR = 'profesor';
     public const TIPO_EXTERNO = 'externo';
-    
+
     /**
      * Constructor de la clase Usuario
      */
@@ -48,17 +48,17 @@ class Usuario extends EntidadBase
         $this->telefono = $telefono;
         $this->direccion = $direccion;
         $this->activo = $activo;
-        
+
         // Configurar límites según tipo de usuario
         $this->configurarLimitesPorTipo();
     }
-    
+
     // Getters y Setters
     public function getNombre(): string
     {
         return $this->nombre;
     }
-    
+
     public function setNombre(string $nombre): void
     {
         if (!empty(trim($nombre))) {
@@ -66,12 +66,12 @@ class Usuario extends EntidadBase
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     public function getApellido(): string
     {
         return $this->apellido;
     }
-    
+
     public function setApellido(string $apellido): void
     {
         if (!empty(trim($apellido))) {
@@ -79,12 +79,12 @@ class Usuario extends EntidadBase
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     public function getEmail(): string
     {
         return $this->email;
     }
-    
+
     public function setEmail(string $email): void
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -92,45 +92,45 @@ class Usuario extends EntidadBase
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     public function getTelefono(): string
     {
         return $this->telefono;
     }
-    
+
     public function setTelefono(string $telefono): void
     {
         $this->telefono = trim($telefono);
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getDireccion(): string
     {
         return $this->direccion;
     }
-    
+
     public function setDireccion(string $direccion): void
     {
         $this->direccion = trim($direccion);
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getNumeroIdentificacion(): string
     {
         return $this->numeroIdentificacion;
     }
-    
+
     public function setNumeroIdentificacion(string $numeroIdentificacion): void
     {
         $this->numeroIdentificacion = trim($numeroIdentificacion);
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getTipoUsuario(): string
     {
         return $this->tipoUsuario;
     }
-    
+
     public function setTipoUsuario(string $tipoUsuario): void
     {
         $tiposValidos = [self::TIPO_ESTUDIANTE, self::TIPO_PROFESOR, self::TIPO_EXTERNO];
@@ -140,28 +140,28 @@ class Usuario extends EntidadBase
             $this->actualizarFechaModificacion();
         }
     }
-    
+
     public function isActivo(): bool
     {
         return $this->activo;
     }
-    
+
     public function setActivo(bool $activo): void
     {
         $this->activo = $activo;
         $this->actualizarFechaModificacion();
     }
-    
+
     public function getMaxLibrosPrestamo(): int
     {
         return $this->maxLibrosPrestamo;
     }
-    
+
     public function getDiasMaximoPrestamo(): int
     {
         return $this->diasMaximoPrestamo;
     }
-    
+
     /**
      * Obtiene el nombre completo del usuario
      */
@@ -169,7 +169,7 @@ class Usuario extends EntidadBase
     {
         return $this->nombre . ' ' . $this->apellido;
     }
-    
+
     /**
      * Activa el usuario
      */
@@ -177,7 +177,7 @@ class Usuario extends EntidadBase
     {
         $this->setActivo(true);
     }
-    
+
     /**
      * Desactiva el usuario
      */
@@ -185,7 +185,7 @@ class Usuario extends EntidadBase
     {
         $this->setActivo(false);
     }
-    
+
     /**
      * Verifica si el usuario es estudiante
      */
@@ -193,7 +193,7 @@ class Usuario extends EntidadBase
     {
         return $this->tipoUsuario === self::TIPO_ESTUDIANTE;
     }
-    
+
     /**
      * Verifica si el usuario es profesor
      */
@@ -201,7 +201,7 @@ class Usuario extends EntidadBase
     {
         return $this->tipoUsuario === self::TIPO_PROFESOR;
     }
-    
+
     /**
      * Verifica si el usuario es externo
      */
@@ -209,7 +209,7 @@ class Usuario extends EntidadBase
     {
         return $this->tipoUsuario === self::TIPO_EXTERNO;
     }
-    
+
     /**
      * Configura los límites de préstamo según el tipo de usuario
      */
@@ -233,19 +233,19 @@ class Usuario extends EntidadBase
                 $this->diasMaximoPrestamo = 7;
         }
     }
-    
+
     /**
      * Valida los datos del usuario
      */
     protected function validar(): bool
     {
-        return !empty($this->nombre) && 
-               !empty($this->apellido) && 
-               !empty($this->email) && 
-               filter_var($this->email, FILTER_VALIDATE_EMAIL) &&
-               !empty($this->numeroIdentificacion);
+        return !empty($this->nombre) &&
+            !empty($this->apellido) &&
+            !empty($this->email) &&
+            filter_var($this->email, FILTER_VALIDATE_EMAIL) &&
+            !empty($this->numeroIdentificacion);
     }
-    
+
     /**
      * Convierte el usuario a array
      */
@@ -268,7 +268,7 @@ class Usuario extends EntidadBase
             'fecha_actualizacion' => $this->fechaActualizacion->format('Y-m-d H:i:s')
         ];
     }
-    
+
     public function __toString(): string
     {
         return $this->getNombreCompleto() . " ({$this->tipoUsuario})";
